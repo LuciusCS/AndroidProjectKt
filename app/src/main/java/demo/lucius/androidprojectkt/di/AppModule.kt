@@ -22,10 +22,10 @@ class AppModule {
         /**
          * class.java传入的是Java类
          */
-        return Retrofit.Builder().baseUrl("https://api.github.com/").addConverterFactory(
-            GsonConverterFactory.create()
-        ).addCallAdapterFactory(LiveDataCallAdapterFactory()).build()
-            .create(GithubService::class.java)
+        return Retrofit.Builder().baseUrl("https://api.github.com/")
+            .addConverterFactory(GsonConverterFactory.create())               //设置数据解析器
+            .addCallAdapterFactory(LiveDataCallAdapterFactory()).build()
+            .create(GithubService::class.java)                               //创建网络请求接口的实例
     }
 
     @Singleton
@@ -37,7 +37,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideUserDao(db: GithubDb):UserDao{
+    fun provideUserDao(db: GithubDb): UserDao {
         return db.userDao()
     }
 

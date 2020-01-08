@@ -43,6 +43,7 @@ class SearchViewModel @Inject constructor(repoRepository: RepoRepository) : View
         //重新进行搜索
         nextPageHandler.reset()
         _query.value = input
+
     }
 
     fun loadNextPage() {

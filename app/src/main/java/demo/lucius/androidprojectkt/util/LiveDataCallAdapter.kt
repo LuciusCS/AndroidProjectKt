@@ -25,6 +25,8 @@ class LiveDataCallAdapter<R>(private val responseType: Type) :
                 super.onActive()
                 //如果值是expect compareAndSet将started设置为update，并执行后面的语句，整个过程是不能够被打断的
                 if (started.compareAndSet(false, true)) {
+
+                    //可以通过call.cancel() 取消正在进行的事务
                     call.enqueue(object : Callback<R> {
                         override fun onFailure(call: Call<R>, t: Throwable) {
                             //是object:LiveData<ApiResponse<R>>调用的

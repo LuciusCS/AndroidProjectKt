@@ -39,6 +39,10 @@ class SearchFragment : Fragment(), Injectable {
     @Inject
     lateinit var appExecutors: AppExecutors
 
+//    @Inject
+
+
+
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
     /**
@@ -48,6 +52,7 @@ class SearchFragment : Fragment(), Injectable {
     var binding by autoCleared<SearchFragmentBinding>()
 
     var adapter by autoCleared<RepoListAdapter>()
+
 
 
     val searchViewModel: SearchViewModel by viewModels {
@@ -74,7 +79,8 @@ class SearchFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        binding.setLifecycleOwner(viewLifecycleOwner)
+        binding.setLifecycleOwner(this)
+//        binding.setLifecycleOwner(viewLifecycleOwner)
         initRecyclerView()
 
         val rvAdapter = RepoListAdapter(
@@ -91,7 +97,9 @@ class SearchFragment : Fragment(), Injectable {
 
         initSearchInputListener()
 
+
         binding.callback=object :RetryCallback{
+            //retry()在布局文件中会被调用
             override fun retry() {
                 searchViewModel.refresh()
             }

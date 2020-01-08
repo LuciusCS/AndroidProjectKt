@@ -4,6 +4,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import demo.lucius.androidprojectkt.AppExecutors
 import demo.lucius.androidprojectkt.api.ApiEmptyResponse
 import demo.lucius.androidprojectkt.api.ApiErrorResponse
@@ -23,6 +24,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
     //用于在类加载的时候进行初始化
     init {
         result.value = Resource.loading(null)
+        //loadFromDb在该例实例化的时候进行重写
         val dbSource = loadFromDb()
         //data类型
         result.addSource(dbSource) { data ->
@@ -36,12 +38,28 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             }
         }
 
+//        result.addSource(dbSource, object : Observer<ResultType> {
+//            override fun onChanged(t: ResultType) {
+//                result.removeSource(dbSource);
+//                if (shouldFetch(t)) {
+//                    fetchFromNetwork(dbSource)
+//                } else {
+//                    result.addSource(dbSource, object : Observer<ResultType> {
+//                        override fun onChanged(t: ResultType) {
+//                            setValue(Resource.success(t))
+//                        }
+//                    })
+//                }
+//            }
+//        })
+
     }
 
     /**
      * 用于通过网络获取数据
      */
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
+        //createCall()在调用的时候重写
         val apiResponse = createCall()
         //将数据重新绑定为最新数据，
         result.addSource(dbSource) { newData ->

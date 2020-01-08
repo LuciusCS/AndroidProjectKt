@@ -116,6 +116,9 @@ class RepoRepository @Inject constructor(
         return fetchNextSearchPageTask.liveData
     }
 
+    /***
+     * 用于进行搜索数据来源有两个方面，一个是Github 一个是数据库
+     */
     fun search(query: String): LiveData<Resource<List<Repo>>> {
         return object : NetworkBoundResource<List<Repo>, RepoSearchResponse>(appExecutors) {
 
